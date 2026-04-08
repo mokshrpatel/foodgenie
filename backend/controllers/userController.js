@@ -10,6 +10,8 @@ exports.updateUserProfile = async (req, res) => {
     if (user) {
       user.name = req.body.name || user.name;
       user.imageUrl = req.body.imageUrl || user.imageUrl;
+      if (req.body.phone !== undefined) user.phone = req.body.phone;
+      if (req.body.address !== undefined) user.address = req.body.address;
       // You can add more fields here if desired
 
       // Update categories if array provided
@@ -25,6 +27,8 @@ exports.updateUserProfile = async (req, res) => {
         email: updatedUser.email,
         role: updatedUser.role,
         imageUrl: updatedUser.imageUrl,
+        phone: updatedUser.phone,
+        address: updatedUser.address,
         categories: updatedUser.categories
       });
     } else {

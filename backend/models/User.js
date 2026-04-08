@@ -23,6 +23,16 @@ const userSchema = new mongoose.Schema({
     enum: ['CUSTOMER', 'OWNER', 'ADMIN'],
     default: 'CUSTOMER'
   },
+  phone: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  address: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   imageUrl: {
     type: String,
     default: ''
