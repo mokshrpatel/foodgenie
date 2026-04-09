@@ -67,7 +67,14 @@ const RestaurantDetails = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-10">
         <div className="bg-white rounded-2xl shadow-sm p-6 md:p-8 mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{restaurant.name}</h1>
+          <div className="flex items-center gap-4 mb-2">
+            <h1 className="text-3xl font-bold text-gray-900">{restaurant.name}</h1>
+            {restaurant.isOpen === false && (
+              <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-semibold rounded-full">
+                Currently Closed
+              </span>
+            )}
+          </div>
           <p className="text-gray-500 mb-4">{restaurant.categories?.join(' • ') || 'Various'}</p>
           
           <div className="flex items-center gap-6 text-sm text-gray-600 border-t border-gray-100 pt-4">
@@ -94,7 +101,7 @@ const RestaurantDetails = () => {
           {menuItems.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {menuItems.map(item => (
-                <MenuItemCard key={item._id} item={item} restaurantId={restaurant._id} />
+                <MenuItemCard key={item._id} item={item} restaurantId={restaurant._id} isOpen={restaurant.isOpen !== false} />
               ))}
             </div>
           ) : (

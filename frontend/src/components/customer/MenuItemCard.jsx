@@ -3,11 +3,13 @@ import { Plus } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { API_URL } from '../../config';
 
-const MenuItemCard = ({ item, restaurantId }) => {
+const MenuItemCard = ({ item, restaurantId, isOpen = true }) => {
   const { addToCart } = useCart();
 
   const handleAdd = () => {
-    addToCart(item, restaurantId);
+    if (isOpen) {
+      addToCart(item, restaurantId);
+    }
   };
 
   return (
@@ -23,7 +25,13 @@ const MenuItemCard = ({ item, restaurantId }) => {
         <span className="font-bold text-gray-900">${item.price.toFixed(2)}</span>
         <button 
           onClick={handleAdd}
-          className="bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white p-2 rounded-full transition-colors flex items-center justify-center"
+          disabled={!isOpen}
+          className={`p-2 rounded-full transition-colors flex items-center justify-center ${
+            isOpen 
+              ? 'bg-orange-50 text-orange-600 hover:bg-orange-600 hover:text-white' 
+              : 'bg-gray-100 text-gray-400 cursor-not-allowed'
+          }`}
+          title={!isOpen ? "Restaurant is currently closed" : "Add to cart"}
         >
           <Plus className="w-5 h-5" />
         </button>

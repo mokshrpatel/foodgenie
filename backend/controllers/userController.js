@@ -29,7 +29,8 @@ exports.updateUserProfile = async (req, res) => {
         imageUrl: updatedUser.imageUrl,
         phone: updatedUser.phone,
         address: updatedUser.address,
-        categories: updatedUser.categories
+        categories: updatedUser.categories,
+        isOpen: updatedUser.isOpen
       });
     } else {
       res.status(404).json({ message: 'User not found' });
@@ -37,5 +38,30 @@ exports.updateUserProfile = async (req, res) => {
   } catch (error) {
     console.error('Error updating user profile:', error);
     res.status(500).json({ message: 'Server error updating user profile' });
+  }
+};
+
+// @desc    Update restaurant status (open/close)
+// @route   PUT /api/users/status
+// @access  Private (Owner)
+exports.updateRestaurantStatus = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (user && user.role === 'OWNER') {
+      user.isOpen = req.body.isOpen;
+      const updatedUser = await user.save();
+
+      res.json({
+        _id: updatedUser._id,
+        isOpen: updatedUser.isOpen,
+        message: updatedUser.isOpen ? 'Restaurant is now open' : 'Restaurant is now closed'
+      });
+    } else {
+      res.status(404).json({ message: 'Restaurant owner not found or unauthorized' });
+    }
+  } catch (error) {
+    console.error('Error updating restaurant status:', error);
+    res.status(500).json({ message: 'Server error updating status' });
   }
 };

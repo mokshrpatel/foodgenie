@@ -235,7 +235,7 @@ const Profile = () => {
                     
                     {/* Restaurant Image */}
                     <div className="h-24 w-24 rounded-lg overflow-hidden flex-shrink-0">
-                      <img src={order.restaurant?.imageUrl || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=200&h=200&q=80'} alt={order.restaurant?.name || 'Restaurant'} className="h-full w-full object-cover" />
+                      <img src={order.restaurant?.imageUrl ? `${API_URL}${order.restaurant.imageUrl}` : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=200&h=200&q=80'} alt={order.restaurant?.name || 'Restaurant'} className="h-full w-full object-cover" />
                     </div>
                     
                     {/* Order Details */}

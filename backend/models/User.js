@@ -44,6 +44,10 @@ const userSchema = new mongoose.Schema({
   categories: {
     type: [String],
     default: []
+  },
+  isOpen: {
+    type: Boolean,
+    default: true
   }
 }, { timestamps: true });
 

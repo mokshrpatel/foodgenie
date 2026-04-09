@@ -57,7 +57,7 @@ function App() {
             <Route index element={<Navigate to="dashboard" replace />} />
           </Route>
         </Route>
-        
+
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

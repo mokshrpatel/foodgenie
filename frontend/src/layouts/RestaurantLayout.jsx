@@ -40,13 +40,10 @@ const RestaurantLayout = () => {
             <UtensilsCrossed className="h-5 w-5" />
             <span>Menu Management</span>
           </Link>
-          <Link to="/partner/orders" className="flex items-center space-x-2 text-gray-300 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md">
-            <ClipboardList className="h-5 w-5" />
-            <span>Active Orders</span>
-          </Link>
+
         </nav>
         <div className="p-4 border-t border-gray-800">
-          <button 
+          <button
             onClick={handleLogout}
             className="flex items-center space-x-2 text-gray-400 hover:text-white w-full transition-colors"
           >
