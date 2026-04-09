@@ -8,7 +8,7 @@ export const mockRestaurants = [
     deliveryTime: "25-30 min",
     deliveryFee: 1.99,
     categories: ["Pizza", "Italian"],
-    priceRange: "$$",
+    priceRange: "₹₹",
     isPromoted: true
   },
   {
@@ -20,7 +20,7 @@ export const mockRestaurants = [
     deliveryTime: "40-50 min",
     deliveryFee: 3.99,
     categories: ["Asian", "Sushi", "Healthy"],
-    priceRange: "$$$",
+    priceRange: "₹₹₹",
     isPromoted: false
   },
   {
@@ -32,7 +32,7 @@ export const mockRestaurants = [
     deliveryTime: "15-25 min",
     deliveryFee: 0,
     categories: ["Burger", "American", "Fast Food"],
-    priceRange: "$",
+    priceRange: "₹",
     isPromoted: false
   },
   {
@@ -44,7 +44,7 @@ export const mockRestaurants = [
     deliveryTime: "20-30 min",
     deliveryFee: 2.49,
     categories: ["Healthy", "Vegan", "Salad"],
-    priceRange: "$$",
+    priceRange: "₹₹",
     isPromoted: false
   },
   {
@@ -56,7 +56,7 @@ export const mockRestaurants = [
     deliveryTime: "30-40 min",
     deliveryFee: 1.49,
     categories: ["Mexican", "Fast Food"],
-    priceRange: "$",
+    priceRange: "₹",
     isPromoted: true
   },
   {
@@ -68,7 +68,7 @@ export const mockRestaurants = [
     deliveryTime: "35-45 min",
     deliveryFee: 2.99,
     categories: ["Indian", "Asian"],
-    priceRange: "$$",
+    priceRange: "₹₹",
     isPromoted: false
   }
 ];

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Tag, FileText, DollarSign, Loader, Image as ImageIcon, Upload, Star } from 'lucide-react';
+import { Plus, Edit2, Trash2, Tag, FileText, IndianRupee, Loader, Image as ImageIcon, Upload, Star } from 'lucide-react';
 import { API_URL } from '../../config';
 
 const MenuManagement = () => {
@@ -267,10 +267,10 @@ const MenuManagement = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹)</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <DollarSign className="h-4 w-4 text-gray-400" />
+                    <IndianRupee className="h-4 w-4 text-gray-400" />
                   </div>
                   <input
                     type="number"

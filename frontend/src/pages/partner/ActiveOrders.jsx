@@ -100,7 +100,7 @@ const ActiveOrders = () => {
                       Customer: {order.customer?.name || 'Unknown'} • {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
-                  <span className="font-bold text-lg text-orange-600">${order.totalAmount?.toFixed(2)}</span>
+                  <span className="font-bold text-lg text-orange-600">₹{order.totalAmount?.toFixed(2)}</span>
                 </div>
 
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">

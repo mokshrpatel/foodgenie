@@ -105,7 +105,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
               <div key={item._id} className="flex justify-between items-center border-b border-gray-50 pb-4">
                 <div className="flex-1 mr-4">
                   <h4 className="font-semibold text-gray-900">{item.name}</h4>
-                  <p className="text-orange-600 font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="text-orange-600 font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                 </div>
                 <div className="flex items-center bg-gray-50 rounded-lg p-1 border border-gray-200">
                   <button onClick={() => updateQuantity(item._id, -1)} className="p-1 hover:bg-white rounded shadow-sm text-gray-600">
@@ -125,7 +125,7 @@ const CartSidebar = ({ isOpen, onClose }) => {
           <div className="p-4 border-t border-gray-100 bg-white">
             <div className="flex justify-between items-center mb-4 text-lg font-bold">
               <span>Total</span>
-              <span>${cartTotal.toFixed(2)}</span>
+              <span>₹{cartTotal.toFixed(2)}</span>
             </div>
             <button 
               onClick={handleCheckout}

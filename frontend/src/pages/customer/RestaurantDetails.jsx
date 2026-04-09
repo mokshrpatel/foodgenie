@@ -92,10 +92,10 @@ const RestaurantDetails = () => {
             )}
           </div>
           {menuItems.filter(item => item.isFamous).length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-2.5 mb-4">
               {menuItems.filter(item => item.isFamous).map(item => (
-                <span key={item._id} className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full flex items-center shadow-sm">
-                  <Star className="w-4 h-4 mr-1 text-yellow-600 fill-current" />
+                <span key={item._id} className="px-4 py-1.5 bg-gradient-to-r from-amber-50 to-orange-50 border border-orange-100 text-orange-800 text-sm font-bold rounded-full flex items-center shadow-sm hover:shadow-md transition-shadow">
+                  <Star className="w-4 h-4 mr-1.5 text-orange-500 fill-current" />
                   {item.name}
                 </span>
               ))}

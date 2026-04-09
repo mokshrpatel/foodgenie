@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DollarSign, ShoppingBag, Users, TrendingUp, Upload, Image as ImageIcon, Loader, MapPin, Save } from 'lucide-react';
+import { IndianRupee, ShoppingBag, Users, TrendingUp, Upload, Image as ImageIcon, Loader, MapPin, Save } from 'lucide-react';
 import { API_URL } from '../../config';
 
 const StatCard = ({ title, value, icon: Icon, trend }) => (
@@ -237,10 +237,10 @@ export default function OwnerDashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <StatCard title="Total Revenue" value={`$${orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + o.totalAmount, 0).toFixed(2)}`} icon={DollarSign} trend={12.5} />
+        <StatCard title="Total Revenue" value={`₹${orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + o.totalAmount, 0).toFixed(2)}`} icon={IndianRupee} trend={12.5} />
         <StatCard title="Orders Today" value={orders.filter(o => new Date(o.createdAt).toDateString() === new Date().toDateString() && o.status !== 'cancelled').length} icon={ShoppingBag} trend={8.2} />
         <StatCard title="Total Orders" value={orders.length} icon={ShoppingBag} trend={4.5} />
-        <StatCard title="Avg. Order Value" value={`$${(orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + o.totalAmount, 0) / (orders.filter(o => o.status !== 'cancelled').length || 1)).toFixed(2)}`} icon={DollarSign} trend={5.1} />
+        <StatCard title="Avg. Order Value" value={`₹${(orders.filter(o => o.status !== 'cancelled').reduce((acc, o) => acc + o.totalAmount, 0) / (orders.filter(o => o.status !== 'cancelled').length || 1)).toFixed(2)}`} icon={IndianRupee} trend={5.1} />
       </div>
 
       <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-gray-100 dark:border-dark-700 p-6">
@@ -272,7 +272,7 @@ export default function OwnerDashboard() {
                       {order.status.replace('_', ' ')}
                     </span>
                   </td>
-                  <td className="py-4 text-gray-900 dark:text-white font-medium">${order.totalAmount.toFixed(2)}</td>
+                  <td className="py-4 text-gray-900 dark:text-white font-medium">₹{order.totalAmount.toFixed(2)}</td>
                   <td className="py-4 text-gray-500 dark:text-gray-400">
                     {new Date(order.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </td>

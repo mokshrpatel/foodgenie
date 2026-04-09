@@ -22,7 +22,7 @@ const MenuItemCard = ({ item, restaurantId, isOpen = true }) => {
         <p className="text-gray-500 text-sm mt-1 line-clamp-2">{item.description}</p>
       </div>
       <div className="flex items-center justify-between mt-4">
-        <span className="font-bold text-gray-900">${item.price.toFixed(2)}</span>
+        <span className="font-bold text-gray-900">₹{item.price.toFixed(2)}</span>
         <button 
           onClick={handleAdd}
           disabled={!isOpen}

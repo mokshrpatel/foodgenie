@@ -1,38 +1,42 @@
 import React from 'react';
-import { Clock, MapPin } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const RestaurantCard = ({ restaurant }) => {
   return (
-    <Link to={`/restaurant/${restaurant.id}`} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group cursor-pointer flex flex-col h-full text-left">
-      <div className="relative h-48 overflow-hidden">
-        <img 
-          src={restaurant.image} 
-          alt={restaurant.name} 
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+    <Link 
+      to={`/restaurant/${restaurant.id}`} 
+      className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.12)] duration-500 border border-gray-100 hover:-translate-y-2 text-left"
+    >
+      <div className="relative h-60 w-full overflow-hidden">
+        <img
+          src={restaurant.image}
+          alt={restaurant.name}
+          className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        
         {restaurant.isPromoted && (
-          <span className="absolute top-4 left-4 bg-gray-900 text-white text-xs font-bold px-2 py-1 rounded">
-            PROMOTED
-          </span>
-        )}
-      </div>
-      
-      <div className="p-4 flex flex-col flex-grow">
-        <div className="flex justify-between items-start mb-2">
-          <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{restaurant.name}</h3>
-        </div>
-        
-        <p className="text-gray-500 text-sm mb-3 line-clamp-1 flex items-center">
-          <MapPin className="w-3.5 h-3.5 mr-1 text-gray-400 shrink-0" />
-          {restaurant.address}
-        </p>
-        
-        <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-600">
-          <div className="flex items-center">
-            <Clock className="w-4 h-4 mr-1.5 text-gray-400" />
-            {restaurant.deliveryTime}
+          <div className="absolute top-4 left-4">
+            <span className="px-4 py-1.5 bg-white/95 backdrop-blur-md text-[10px] sm:text-xs font-black tracking-widest uppercase text-orange-600 rounded-full shadow-sm">
+              Featured
+            </span>
           </div>
+        )}
+
+
+      </div>
+
+      <div className="p-6 relative bg-white flex-grow flex flex-col justify-center">
+        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 line-clamp-1 mb-3 group-hover:text-orange-500 transition-colors duration-300">
+          {restaurant.name}
+        </h3>
+        
+        <div className="flex items-start text-gray-500 group-hover:text-gray-600 transition-colors">
+          <MapPin className="w-4 h-4 sm:w-5 sm:h-5 mr-2 mt-0.5 text-orange-400 shrink-0" />
+          <p className="text-sm sm:text-base font-medium leading-relaxed line-clamp-2">
+            {restaurant.address}
+          </p>
         </div>
       </div>
     </Link>

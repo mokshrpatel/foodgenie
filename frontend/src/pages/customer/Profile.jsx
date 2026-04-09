@@ -286,7 +286,7 @@ const Profile = () => {
                         </div>
                         <div className="flex items-center gap-4">
                           <span className="font-bold text-gray-900">
-                            ${order.totalAmount?.toFixed(2) || '0.00'}
+                            ₹{order.totalAmount?.toFixed(2) || '0.00'}
                           </span>
                           {order.status === 'out_for_delivery' && (
                             <button
