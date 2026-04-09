@@ -3,8 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Star, Clock, Truck, Loader } from 'lucide-react';
 import { API_URL } from '../../config';
 import MenuItemCard from '../../components/customer/MenuItemCard';
-import { useCart } from '../../context/CartContext';
-import CartSidebar from '../../components/customer/CartSidebar';
 
 const RestaurantDetails = () => {
   const { id } = useParams();
@@ -12,8 +10,6 @@ const RestaurantDetails = () => {
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { cartCount } = useCart();
-  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const fetchRestaurantAndMenu = async () => {
@@ -52,7 +48,6 @@ const RestaurantDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 relative">
-      <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
       
       {/* Header Image */}
       <div className="h-64 md:h-80 w-full relative">
@@ -109,30 +104,6 @@ const RestaurantDetails = () => {
           )}
         </div>
       </div>
-
-      {cartCount > 0 && (
-        <div className="fixed bottom-0 inset-x-0 p-4 bg-white border-t border-gray-100 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40 md:hidden">
-            <button 
-                onClick={() => setIsCartOpen(true)}
-                className="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-xl shadow-md transition-colors flex justify-between items-center"
-            >
-                <div className="bg-orange-700 w-8 h-8 rounded-full flex items-center justify-center text-sm">{cartCount}</div>
-                <span>View cart</span>
-                <span>Checkout</span>
-            </button>
-        </div>
-      )}
-      
-      {/* Floating cart button for desktop */}
-      {cartCount > 0 && (
-        <button 
-          onClick={() => setIsCartOpen(true)}
-          className="hidden md:flex fixed bottom-8 right-8 bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-transform hover:scale-105 items-center gap-3 z-40"
-        >
-          <div className="bg-white text-orange-600 font-bold w-6 h-6 rounded-full flex items-center justify-center text-xs">{cartCount}</div>
-          View Cart
-        </button>
-      )}
     </div>
   );
 };
