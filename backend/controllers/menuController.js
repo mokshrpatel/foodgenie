@@ -19,7 +19,7 @@ exports.getMenuItems = async (req, res) => {
 // @access  Private (OWNER)
 exports.createMenuItem = async (req, res) => {
   try {
-    const { name, description, price, imageUrl } = req.body;
+    const { name, description, price, imageUrl, isFamous } = req.body;
 
     if (!name || !description || price === undefined) {
       return res.status(400).json({ message: 'Please provide name, description, and price' });
@@ -30,6 +30,7 @@ exports.createMenuItem = async (req, res) => {
       description,
       price,
       imageUrl,
+      isFamous,
       ownerId: req.user._id
     });
 

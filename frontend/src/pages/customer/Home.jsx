@@ -16,7 +16,7 @@ const Home = () => {
         if (response.ok) {
           const data = await response.json();
           let parsedRestaurants = [];
-          
+
           if (data && data.length > 0) {
             parsedRestaurants = data.map(r => {
               let imgUrl = r.imageUrl;
@@ -27,7 +27,7 @@ const Home = () => {
               } else {
                 imgUrl = 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=500&q=60';
               }
-              
+
               return {
                 id: r._id,
                 name: r.name,
@@ -36,7 +36,8 @@ const Home = () => {
                 deliveryTime: '30-45 min',
                 deliveryFee: 2.99,
                 minOrder: 15,
-                categories: r.categories && r.categories.length > 0 ? r.categories : ['Fast Food']
+                categories: r.categories && r.categories.length > 0 ? r.categories : ['Fast Food'],
+                address: r.address || 'Location not added yet'
               };
             });
           } else {
@@ -50,7 +51,8 @@ const Home = () => {
                 deliveryTime: '20-30 min',
                 deliveryFee: 1.49,
                 minOrder: 10,
-                categories: ['Fast Food', 'Burgers']
+                categories: ['Fast Food', 'Burgers'],
+                address: '123 Burger King St, City'
               },
               {
                 id: 'mock-2',
@@ -60,7 +62,8 @@ const Home = () => {
                 deliveryTime: '40-55 min',
                 deliveryFee: 0,
                 minOrder: 25,
-                categories: ['Indian', 'Curry']
+                categories: ['Indian', 'Curry'],
+                address: '456 Curry Ave, FoodTown'
               },
               {
                 id: 'mock-3',
@@ -70,7 +73,8 @@ const Home = () => {
                 deliveryTime: '25-40 min',
                 deliveryFee: 3.99,
                 minOrder: 15,
-                categories: ['Pizza', 'Italian']
+                categories: ['Pizza', 'Italian'],
+                address: '789 Pizza Blvd, NY'
               }
             ];
           }
@@ -89,7 +93,7 @@ const Home = () => {
   const filteredRestaurants = useMemo(() => {
     return dbRestaurants.filter((restaurant) => {
       // 1. Text Search Filter
-      const matchesSearch = 
+      const matchesSearch =
         restaurant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         restaurant.categories.some(cat => cat.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -101,12 +105,12 @@ const Home = () => {
     <div className="w-full text-left">
       {/* Search state bubbles down to HeroSection */}
       <HeroSection searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-      
+
       <div>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 space-y-2 sm:space-y-0">
           <h2 className="text-2xl font-bold text-gray-900">
-            {searchQuery 
-              ? `Search Results for "${searchQuery}"` 
+            {searchQuery
+              ? `Search Results for "${searchQuery}"`
               : 'Popular Restaurants'
             }
           </h2>
@@ -115,7 +119,7 @@ const Home = () => {
 
         {loading ? (
           <div className="py-20 flex justify-center text-orange-500">
-             <Loader className="animate-spin h-10 w-10 border-2 border-transparent bg-orange-100 rounded-full p-2" />
+            <Loader className="animate-spin h-10 w-10 border-2 border-transparent bg-orange-100 rounded-full p-2" />
           </div>
         ) : filteredRestaurants.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -127,7 +131,7 @@ const Home = () => {
           <div className="py-20 text-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
             <h3 className="text-xl font-bold text-gray-700 mb-2">No restaurants found 😕</h3>
             <p className="text-gray-500 mb-6">Try adjusting your search or category filter.</p>
-            <button 
+            <button
               onClick={() => {
                 setSearchQuery('');
               }}

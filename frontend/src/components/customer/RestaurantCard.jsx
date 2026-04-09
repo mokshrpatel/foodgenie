@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Clock, Truck } from 'lucide-react';
+import { Clock, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const RestaurantCard = ({ restaurant }) => {
@@ -21,24 +21,17 @@ const RestaurantCard = ({ restaurant }) => {
       <div className="p-4 flex flex-col flex-grow">
         <div className="flex justify-between items-start mb-2">
           <h3 className="text-lg font-bold text-gray-900 line-clamp-1">{restaurant.name}</h3>
-          <div className="flex items-center bg-green-50 text-green-700 px-1.5 py-0.5 rounded text-sm font-semibold">
-            <Star className="w-3.5 h-3.5 mr-1 fill-current" />
-            {restaurant.rating}
-          </div>
         </div>
         
-        <p className="text-gray-500 text-sm mb-3">
-          {restaurant.categories.join(' • ')} • {restaurant.priceRange}
+        <p className="text-gray-500 text-sm mb-3 line-clamp-1 flex items-center">
+          <MapPin className="w-3.5 h-3.5 mr-1 text-gray-400 shrink-0" />
+          {restaurant.address}
         </p>
         
         <div className="mt-auto pt-3 border-t border-gray-100 flex items-center justify-between text-sm text-gray-600">
           <div className="flex items-center">
             <Clock className="w-4 h-4 mr-1.5 text-gray-400" />
             {restaurant.deliveryTime}
-          </div>
-          <div className="flex items-center">
-            <Truck className="w-4 h-4 mr-1.5 text-gray-400" />
-            {restaurant.deliveryFee === 0 ? 'Free' : `$${restaurant.deliveryFee}`}
           </div>
         </div>
       </div>

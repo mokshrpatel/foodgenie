@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { DollarSign, ShoppingBag, Users, TrendingUp, Upload, Image as ImageIcon, Loader } from 'lucide-react';
+import { DollarSign, ShoppingBag, Users, TrendingUp, Upload, Image as ImageIcon, Loader, MapPin, Save } from 'lucide-react';
 import { API_URL } from '../../config';
 
 const StatCard = ({ title, value, icon: Icon, trend }) => (
@@ -26,10 +26,16 @@ export default function OwnerDashboard() {
   const [orders, setOrders] = useState([]);
   const [togglingStatus, setTogglingStatus] = useState(false);
   const token = localStorage.getItem('token');
+  const [address, setAddress] = useState('');
+  const [updatingAddress, setUpdatingAddress] = useState(false);
 
   useEffect(() => {
     const userStr = localStorage.getItem('user');
-    if (userStr) setUser(JSON.parse(userStr));
+    if (userStr) {
+      const u = JSON.parse(userStr);
+      setUser(u);
+      if (u.address) setAddress(u.address);
+    }
   }, []);
 
   const fetchOrders = async () => {
@@ -96,6 +102,34 @@ export default function OwnerDashboard() {
     }
   };
 
+  const handleAddressUpdate = async () => {
+    if (!user) return;
+    setUpdatingAddress(true);
+    try {
+      const res = await fetch(`${API_URL}/api/users/profile`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ address })
+      });
+      if (res.ok) {
+        const updatedUser = await res.json();
+        setUser(updatedUser);
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        alert('Address updated successfully!');
+      } else {
+        alert('Failed to update address');
+      }
+    } catch (error) {
+      console.error('Error updating address:', error);
+      alert('Error updating address');
+    } finally {
+      setUpdatingAddress(false);
+    }
+  };
+
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -157,6 +191,29 @@ export default function OwnerDashboard() {
             </button>
           </div>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Welcome back! Here's what's happening at {user.name} today.</p>
+
+          <div className="mt-4 flex gap-2 w-full max-w-sm">
+            <div className="relative flex-1">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MapPin className="h-4 w-4 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Restaurant Address/Location"
+                className="pl-10 w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors bg-white shadow-sm"
+              />
+            </div>
+            <button
+               onClick={handleAddressUpdate}
+               disabled={updatingAddress || address === (user.address || '')}
+               className="px-4 py-2 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-medium rounded-lg transition-colors flex items-center shadow-sm"
+            >
+               {updatingAddress ? <Loader className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4 mr-1" />}
+               {!updatingAddress && "Save"}
+            </button>
+          </div>
         </div>
 
         {/* Profile Picture Upload Section */}

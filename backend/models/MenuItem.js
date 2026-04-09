@@ -23,6 +23,10 @@ const menuItemSchema = new mongoose.Schema({
   imageUrl: {
     type: String,
     default: ''
+  },
+  isFamous: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

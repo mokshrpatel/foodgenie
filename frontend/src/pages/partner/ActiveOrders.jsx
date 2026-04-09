@@ -69,13 +69,6 @@ const ActiveOrders = () => {
           <h2 className="text-2xl font-bold text-gray-900">Active Orders</h2>
           <p className="text-sm text-gray-500 mt-1">Manage kitchen preparations and live order states.</p>
         </div>
-        <button 
-          onClick={fetchOrders}
-          className="flex items-center px-4 py-2 bg-orange-50 text-orange-600 rounded-lg hover:bg-orange-100 font-medium transition-colors"
-        >
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Refresh
-        </button>
       </div>
 
       {loading ? (
@@ -93,11 +86,10 @@ const ActiveOrders = () => {
           {activeOrders.map(order => (
             <div key={order._id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col md:flex-row gap-6 relative overflow-hidden">
               {/* Colored left trim indicating status */}
-              <div className={`absolute left-0 top-0 bottom-0 w-1 ${
-                order.status === 'delivered' ? 'bg-green-500' :
-                order.status === 'pending' ? 'bg-orange-500' :
-                order.status === 'preparing' ? 'bg-yellow-500' : 'bg-blue-500'
-              }`} />
+              <div className={`absolute left-0 top-0 bottom-0 w-1 ${order.status === 'delivered' ? 'bg-green-500' :
+                  order.status === 'pending' ? 'bg-orange-500' :
+                    order.status === 'preparing' ? 'bg-yellow-500' : 'bg-blue-500'
+                }`} />
 
               {/* Items column */}
               <div className="flex-1">
@@ -117,7 +109,7 @@ const ActiveOrders = () => {
                     {order.items?.map((item, idx) => (
                       <li key={idx} className="flex items-center justify-between text-gray-800">
                         <span className="font-semibold">
-                          <span className="text-orange-600 font-black mr-2">{item.quantity}x</span> 
+                          <span className="text-orange-600 font-black mr-2">{item.quantity}x</span>
                           {item.name}
                         </span>
                       </li>
@@ -130,7 +122,7 @@ const ActiveOrders = () => {
               <div className="w-full md:w-64 flex flex-col justify-between border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6">
                 <div>
                   <label className="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Actions</label>
-                  
+
                   {order.status === 'pending' && (
                     <div className="flex gap-2">
                       <button onClick={() => updateOrderStatus(order._id, 'preparing')} className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 rounded-lg transition-colors shadow-sm">
@@ -162,8 +154,8 @@ const ActiveOrders = () => {
                     <span className={`
                         ${order.status === 'delivered' ? 'text-green-600' :
                         order.status === 'cancelled' ? 'text-red-600' :
-                        order.status === 'preparing' ? 'text-yellow-600' :
-                        'text-blue-600'}
+                          order.status === 'preparing' ? 'text-yellow-600' :
+                            'text-blue-600'}
                     `}>{order.status.replace('_', ' ')}</span>
                   </div>
                 </div>

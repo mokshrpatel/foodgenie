@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Tag, FileText, DollarSign, Loader, Image as ImageIcon, Upload } from 'lucide-react';
+import { Plus, Edit2, Trash2, Tag, FileText, DollarSign, Loader, Image as ImageIcon, Upload, Star } from 'lucide-react';
 import { API_URL } from '../../config';
 
 const MenuManagement = () => {
@@ -15,7 +15,8 @@ const MenuManagement = () => {
     name: '',
     description: '',
     price: '',
-    imageUrl: ''
+    imageUrl: '',
+    isFamous: false
   });
   
   const token = localStorage.getItem('token');
@@ -88,7 +89,7 @@ const MenuManagement = () => {
       });
       
       if (response.ok) {
-        setFormData({ name: '', description: '', price: '', imageUrl: '' });
+        setFormData({ name: '', description: '', price: '', imageUrl: '', isFamous: false });
         fetchItems();
       } else {
         const data = await response.json();
@@ -108,14 +109,15 @@ const MenuManagement = () => {
       name: item.name,
       description: item.description,
       price: item.price,
-      imageUrl: item.imageUrl || ''
+      imageUrl: item.imageUrl || '',
+      isFamous: item.isFamous || false
     });
   };
 
   const cancelEdit = () => {
     setIsEditing(false);
     setEditId(null);
-    setFormData({ name: '', description: '', price: '', imageUrl: '' });
+    setFormData({ name: '', description: '', price: '', imageUrl: '', isFamous: false });
   };
 
   const handleUpdateItem = async (e) => {
@@ -161,6 +163,35 @@ const MenuManagement = () => {
       }
     } catch (error) {
       console.error('Error deleting item:', error);
+    }
+  };
+
+  const handleToggleFamous = async (item) => {
+    // Optimistic UI update
+    setItems(items.map(i => i._id === item._id ? { ...i, isFamous: !i.isFamous } : i));
+    
+    try {
+      const response = await fetch(`${API_ENDPOINT}/${item._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ ...item, isFamous: !item.isFamous })
+      });
+      
+      if (response.ok) {
+        // Refetch to ensure sync
+        fetchItems();
+      } else {
+        // Revert optimistic update on failure
+        fetchItems();
+        alert('Error toggling famous status');
+      }
+    } catch (error) {
+      console.error('Error toggling famous status:', error);
+      // Revert optimistic update on error
+      fetchItems();
     }
   };
 
@@ -322,6 +353,13 @@ const MenuManagement = () => {
                          ${Number(item.price).toFixed(2)}
                        </span>
                        <div className="flex items-center gap-2">
+                         <button 
+                           onClick={() => handleToggleFamous(item)}
+                           className={`p-2 rounded-lg transition-colors ${item.isFamous ? 'text-yellow-500 bg-yellow-50 hover:bg-yellow-100' : 'text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'}`}
+                           title={item.isFamous ? "Remove from Famous Dishes" : "Mark as Famous Dish"}
+                         >
+                           <Star className={`h-5 w-5 ${item.isFamous ? 'fill-current' : ''}`} />
+                         </button>
                          <button 
                            onClick={() => startEdit(item)}
                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"

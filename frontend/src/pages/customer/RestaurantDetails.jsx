@@ -64,16 +64,16 @@ const RestaurantDetails = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20 relative">
-      
+
       {/* Header Image */}
       <div className="h-64 md:h-80 w-full relative">
-        <img 
-          src={restaurant.imageUrl ? `${API_URL}${restaurant.imageUrl}` : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'} 
+        <img
+          src={restaurant.imageUrl ? `${API_URL}${restaurant.imageUrl}` : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80'}
           alt={restaurant.name}
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-black/40"></div>
-        <button 
+        <button
           onClick={() => navigate(-1)}
           className="absolute top-4 left-4 p-2 bg-white/20 backdrop-blur-md text-white rounded-full hover:bg-white/40 transition-colors"
         >
@@ -91,23 +91,18 @@ const RestaurantDetails = () => {
               </span>
             )}
           </div>
-          <p className="text-gray-500 mb-4">{restaurant.categories?.join(' • ') || 'Various'}</p>
-          
-          <div className="flex items-center gap-6 text-sm text-gray-600 border-t border-gray-100 pt-4">
-            <div className="flex items-center">
-              <Star className="w-5 h-5 text-orange-500 mr-1 fill-current" />
-              <span className="font-semibold text-gray-900">4.5</span>
-              <span className="text-gray-400 ml-1">(120+ ratings)</span>
+          {menuItems.filter(item => item.isFamous).length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {menuItems.filter(item => item.isFamous).map(item => (
+                <span key={item._id} className="px-3 py-1 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full flex items-center shadow-sm">
+                  <Star className="w-4 h-4 mr-1 text-yellow-600 fill-current" />
+                  {item.name}
+                </span>
+              ))}
             </div>
-            <div className="flex items-center">
-              <Clock className="w-5 h-5 text-gray-400 mr-1" />
-              <span>30-45 min</span>
-            </div>
-            <div className="flex items-center">
-              <Truck className="w-5 h-5 text-gray-400 mr-1" />
-              <span>Free Delivery</span>
-            </div>
-          </div>
+          )}
+
+
         </div>
 
         <div>
