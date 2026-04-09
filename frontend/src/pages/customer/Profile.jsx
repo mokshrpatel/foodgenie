@@ -69,7 +69,7 @@ const Profile = () => {
       } else {
         const errorData = await res.json();
         console.error('Update failed:', errorData);
-        alert(`Failed to update order: ${errorData.message}`);
+        alert(`Failed to update order: ${errorData.message} ${errorData.details || ''}`);
       }
     } catch (error) {
       console.error('Error updating order status:', error);

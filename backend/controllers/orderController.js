@@ -66,13 +66,19 @@ exports.updateOrderStatus = async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
+      const userId = req.user._id.toString();
+      const restId = order.restaurant ? (order.restaurant._id ? order.restaurant._id.toString() : order.restaurant.toString()) : null;
+      const custId = order.customer ? (order.customer._id ? order.customer._id.toString() : order.customer.toString()) : null;
+
+      console.log(`[updateOrderStatus] App. ID: ${order._id} | User: ${userId} | Rest: ${restId} | Cust: ${custId} | Role: ${req.user.role}`);
+
       // Ensure the logged in user is the owner of the restaurant OR the customer for this order
-      if (
-        order.restaurant.toString() !== req.user._id.toString() && 
-        order.customer.toString() !== req.user._id.toString() && 
-        req.user.role !== 'ADMIN'
-      ) {
-        return res.status(401).json({ message: 'Not authorized to update this order' });
+      if (restId !== userId && custId !== userId && req.user.role !== 'ADMIN') {
+        console.log(`[updateOrderStatus] UNAUTHORIZED! Denied.`);
+        return res.status(401).json({ 
+          message: 'Not authorized to update this order',
+          details: `User ID: ${userId}, Order Customer: ${custId}, Order Restaurant: ${restId}`
+        });
       }
 
       order.status = status;
