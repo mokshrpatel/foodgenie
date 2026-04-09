@@ -5,24 +5,22 @@ const HeroSection = ({ searchQuery, setSearchQuery }) => {
   return (
     <div className="relative rounded-3xl overflow-hidden mb-16 text-left shadow-2xl h-[500px] flex items-center justify-center animate-fade-in group">
       {/* Background Image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-1000 group-hover:scale-105"
         style={{ backgroundImage: `url('/hero.png')` }}
       ></div>
       {/* Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent"></div>
-      
+
       <div className="relative px-6 sm:px-12 flex flex-col justify-end h-full w-full max-w-5xl mx-auto pb-16 animate-slide-up">
-        <span className="inline-block px-4 py-1.5 rounded-full bg-brand-500/20 text-brand-300 backdrop-blur-md border border-brand-500/30 text-sm font-semibold mb-4 w-max">
-          🚀 Delivered in 30 mins
-        </span>
+
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold text-white tracking-tight mb-4 mt-0 drop-shadow-md">
           Craving something <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-brand-500">delicious?</span>
         </h1>
         <p className="max-w-2xl text-lg sm:text-2xl text-gray-200 mb-10 font-light drop-shadow">
           Discover the top local restaurants and exclusive artisan dishes delivered right to your door.
         </p>
-        
+
         <div className="w-full max-w-2xl relative">
           <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
             <Search className="h-6 w-6 text-brand-500" />

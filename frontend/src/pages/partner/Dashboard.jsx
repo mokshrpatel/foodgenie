@@ -187,7 +187,7 @@ export default function OwnerDashboard() {
       </div>
 
       <div className="bg-white dark:bg-dark-800 rounded-2xl shadow-sm border border-gray-100 dark:border-dark-700 p-6">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Recent Orders</h2>
+        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Recent Orders (Today's Completed)</h2>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
@@ -200,31 +200,20 @@ export default function OwnerDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100 dark:divide-dark-700">
-              {orders.length === 0 ? (
+              {orders.filter(o => (o.status === 'delivered' || o.status === 'cancelled') && new Date(o.updatedAt).toDateString() === new Date().toDateString()).length === 0 ? (
                 <tr>
-                  <td colSpan="5" className="py-8 text-center text-gray-500">No recent orders.</td>
+                  <td colSpan="5" className="py-8 text-center text-gray-500">No recent completed orders today.</td>
                 </tr>
-              ) : orders.map((order) => (
+              ) : orders.filter(o => (o.status === 'delivered' || o.status === 'cancelled') && new Date(o.updatedAt).toDateString() === new Date().toDateString()).map((order) => (
                 <tr key={order._id} className="group hover:bg-gray-50 dark:hover:bg-dark-700/50 transition-colors">
                   <td className="py-4 font-medium text-gray-900 dark:text-white">#{order._id.substring(order._id.length - 6).toUpperCase()}</td>
                   <td className="py-4 text-gray-600 dark:text-gray-300">{order.customer?.name || 'Unknown'}</td>
                   <td className="py-4">
-                    <select
-                      value={order.status}
-                      onChange={(e) => updateOrderStatus(order._id, e.target.value)}
-                      className={`text-xs font-medium px-2 py-1 rounded-full outline-none border-none
-                        ${order.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                          order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                            order.status === 'preparing' ? 'bg-orange-100 text-orange-800' :
-                              'bg-blue-100 text-blue-800'}`}
+                    <span className={`text-xs font-medium px-2.5 py-1 rounded-full outline-none border-none
+                        ${order.status === 'delivered' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'} capitalize`}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="preparing">Preparing</option>
-                      <option value="out_for_delivery">Out for Delivery</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
+                      {order.status.replace('_', ' ')}
+                    </span>
                   </td>
                   <td className="py-4 text-gray-900 dark:text-white font-medium">${order.totalAmount.toFixed(2)}</td>
                   <td className="py-4 text-gray-500 dark:text-gray-400">

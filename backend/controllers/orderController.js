@@ -66,8 +66,12 @@ exports.updateOrderStatus = async (req, res) => {
     const order = await Order.findById(req.params.id);
 
     if (order) {
-      // Ensure the logged in user is the owner of the restaurant for this order
-      if (order.restaurant.toString() !== req.user._id.toString() && req.user.role !== 'ADMIN') {
+      // Ensure the logged in user is the owner of the restaurant OR the customer for this order
+      if (
+        order.restaurant.toString() !== req.user._id.toString() && 
+        order.customer.toString() !== req.user._id.toString() && 
+        req.user.role !== 'ADMIN'
+      ) {
         return res.status(401).json({ message: 'Not authorized to update this order' });
       }
 

@@ -9,51 +9,33 @@ export const CartProvider = ({ children }) => {
   const [restaurantId, setRestaurantId] = useState(null);
   
   const addToCart = (item, rId) => {
-    // If adding item from a different restaurant, clear cart
-    if (restaurantId && restaurantId !== rId) {
-      if (window.confirm("Adding this item will clear your cart from the previous restaurant. Continue?")) {
-        setCartItems([{ ...item, quantity: 1 }]);
-        setRestaurantId(rId);
-      }
-      return;
-    }
-    
-    if (!restaurantId) {
-      setRestaurantId(rId);
-    }
 
     setCartItems(prev => {
       const existingItem = prev.find(i => i._id === item._id);
       if (existingItem) {
         return prev.map(i => i._id === item._id ? { ...i, quantity: i.quantity + 1 } : i);
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...item, quantity: 1, restaurantId: rId }];
     });
   };
 
   const removeFromCart = (itemId) => {
-    setCartItems(prev => {
-      const newItems = prev.filter(i => i._id !== itemId);
-      if (newItems.length === 0) setRestaurantId(null);
-      return newItems;
-    });
+    setCartItems(prev => prev.filter(i => i._id !== itemId));
   };
 
   const updateQuantity = (itemId, delta) => {
     setCartItems(prev => {
       return prev.map(i => {
         if (i._id === itemId) {
-          const newQ = i.quantity + delta;
-          return { ...i, quantity: newQ > 0 ? newQ : 1 };
+          return { ...i, quantity: i.quantity + delta };
         }
         return i;
-      });
+      }).filter(i => i.quantity > 0);
     });
   };
 
   const clearCart = () => {
     setCartItems([]);
-    setRestaurantId(null);
   };
 
   const cartTotal = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
@@ -62,7 +44,6 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider value={{
       cartItems,
-      restaurantId,
       addToCart,
       removeFromCart,
       updateQuantity,

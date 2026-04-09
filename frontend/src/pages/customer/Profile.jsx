@@ -15,6 +15,21 @@ const Profile = () => {
     address: ''
   });
 
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/orders/myorders`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setOrders(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch orders', error);
+    }
+  };
+
   useEffect(() => {
     const userStr = localStorage.getItem('user');
     if (userStr) {
@@ -27,27 +42,40 @@ const Profile = () => {
           address: parsedUser.address || ''
         });
 
-        // Fetch orders
-        const fetchOrders = async () => {
-          try {
-            const token = localStorage.getItem('token');
-            const res = await fetch(`${API_URL}/api/orders/myorders`, {
-              headers: { Authorization: `Bearer ${token}` }
-            });
-            if (res.ok) {
-              const data = await res.json();
-              setOrders(data);
-            }
-          } catch (error) {
-            console.error('Failed to fetch orders', error);
-          }
-        };
+        // Fetch orders and setup polling
         fetchOrders();
+        const intervalId = setInterval(fetchOrders, 10000);
+        return () => clearInterval(intervalId);
       } catch (e) {
         console.error('Failed to parse user details', e);
       }
     }
   }, []);
+
+  const updateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) {
+        fetchOrders();
+        alert('Order successfully marked as delivered!');
+      } else {
+        const errorData = await res.json();
+        console.error('Update failed:', errorData);
+        alert(`Failed to update order: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error updating order status:', error);
+      alert('Network error updating status');
+    }
+  };
 
   const handleUpdateProfile = async () => {
     setIsUpdating(true);
@@ -92,10 +120,10 @@ const Profile = () => {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'Delivered': return 'bg-green-100 text-green-800';
-      case 'Preparing': return 'bg-yellow-100 text-yellow-800';
-      case 'In Transit': return 'bg-blue-100 text-blue-800';
-      case 'Cancelled': return 'bg-red-100 text-red-800';
+      case 'delivered': return 'bg-green-100 text-green-800';
+      case 'preparing': return 'bg-yellow-100 text-yellow-800';
+      case 'out_for_delivery': return 'bg-blue-100 text-blue-800';
+      case 'cancelled': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };
@@ -243,8 +271,8 @@ const Profile = () => {
                       <div>
                         <div className="flex justify-between items-start">
                           <h3 className="font-bold text-lg text-gray-900">{order.restaurant?.name || 'Restaurant'}</h3>
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
-                            {order.status || 'pending'}
+                          <span className={`px-2.5 py-1 rounded-full text-xs font-semibold uppercase ${getStatusColor(order.status)}`}>
+                            {order.status ? order.status.replace('_', ' ') : 'pending'}
                           </span>
                         </div>
                         <p className="text-sm text-gray-500 mt-1 text-left">
@@ -252,12 +280,22 @@ const Profile = () => {
                         </p>
                       </div>
                       
-                      <div className="flex items-center justify-between mt-4 border-t border-gray-200/60 pt-3">
-                        <div className="text-sm text-gray-500">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 border-t border-gray-200/60 pt-3">
+                        <div className="text-sm text-gray-500 mb-2 sm:mb-0">
                           {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} <span className="mx-2">•</span> {order._id.substring(0, 8).toUpperCase()}
                         </div>
-                        <div className="font-bold text-gray-900">
-                          ${order.totalAmount?.toFixed(2) || '0.00'}
+                        <div className="flex items-center gap-4">
+                          <span className="font-bold text-gray-900">
+                            ${order.totalAmount?.toFixed(2) || '0.00'}
+                          </span>
+                          {order.status === 'out_for_delivery' && (
+                            <button
+                              onClick={() => updateOrderStatus(order._id, 'delivered')}
+                              className="px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-bold rounded-lg transition-colors shadow-sm"
+                            >
+                              Mark Delivered
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

@@ -32,6 +32,22 @@ const RestaurantDetails = () => {
       }
     };
     fetchRestaurantAndMenu();
+
+    // Polling exclusively for restaurant status changes (Open/Closed)
+    const intervalId = setInterval(async () => {
+      try {
+        const resResponse = await fetch(`${API_URL}/api/restaurants/${id}`);
+        if (resResponse.ok) {
+          const resData = await resResponse.json();
+          // Update only restaurant state seamlessly
+          setRestaurant(resData);
+        }
+      } catch (error) {
+        console.error('Error polling restaurant details:', error);
+      }
+    }, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(intervalId);
   }, [id]);
 
   if (loading) {

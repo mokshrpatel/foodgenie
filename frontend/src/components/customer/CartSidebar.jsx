@@ -4,7 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { API_URL } from '../../config';
 
 const CartSidebar = ({ isOpen, onClose }) => {
-  const { cartItems, updateQuantity, cartTotal, restaurantId, clearCart } = useCart();
+  const { cartItems, updateQuantity, cartTotal, clearCart } = useCart();
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
 
@@ -18,28 +18,41 @@ const CartSidebar = ({ isOpen, onClose }) => {
         return;
       }
 
-      // Convert cart items to API format
-      const formattedItems = cartItems.map(item => ({
-        menuItem: item._id,
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price
-      }));
+      // Group items by restaurant format
+      const groupedItems = cartItems.reduce((acc, item) => {
+        if (!acc[item.restaurantId]) acc[item.restaurantId] = [];
+        acc[item.restaurantId].push(item);
+        return acc;
+      }, {});
 
-      const response = await fetch(`${API_URL}/api/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          orderItems: formattedItems,
-          restaurantId,
-          totalAmount: cartTotal
-        })
+      // Send a separate order for each restaurant incrementally or parallel
+      const orderPromises = Object.keys(groupedItems).map(rId => {
+        const items = groupedItems[rId];
+        const restaurantTotal = items.reduce((total, i) => total + (i.price * i.quantity), 0);
+        
+        return fetch(`${API_URL}/api/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            orderItems: items.map(i => ({
+              menuItem: i._id,
+              name: i.name,
+              quantity: i.quantity,
+              price: i.price
+            })),
+            restaurantId: rId,
+            totalAmount: restaurantTotal
+          })
+        });
       });
 
-      if (response.ok) {
+      const responses = await Promise.all(orderPromises);
+      const allSuccess = responses.every(r => r.ok);
+
+      if (allSuccess) {
         setOrderComplete(true);
         clearCart();
         setTimeout(() => {

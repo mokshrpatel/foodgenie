@@ -11,6 +11,7 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import OwnerDashboard from './pages/partner/Dashboard';
 import MenuManagement from './pages/partner/MenuManagement';
+import ActiveOrders from './pages/partner/ActiveOrders';
 import AdminDashboard from './pages/admin/Dashboard';
 import RestaurantDetails from './pages/customer/RestaurantDetails';
 
@@ -43,7 +44,7 @@ function App() {
           <Route path="/partner" element={<RestaurantLayout />}>
             <Route path="dashboard" element={<OwnerDashboard />} />
             <Route path="menu" element={<MenuManagement />} />
-            <Route path="orders" element={<div>Active Orders incoming...</div>} />
+            <Route path="orders" element={<ActiveOrders />} />
             <Route index element={<Navigate to="dashboard" replace />} />
           </Route>
         </Route>
