@@ -4,7 +4,7 @@ const User = require('./models/User');
 
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
-    console.log('✅ Connected to MongoDB');
+    console.log('Connected to MongoDB');
     const owners = await User.find({ role: 'OWNER' });
     console.log('All Owners:', owners);
     const activeOwners = await User.find({ role: 'OWNER', isActive: true });

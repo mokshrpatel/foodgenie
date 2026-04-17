@@ -40,43 +40,6 @@ const Home = () => {
                 address: r.address || 'Location not added yet'
               };
             });
-          } else {
-            // Fallback mock data if database is empty so the UI doesn't look broken
-            parsedRestaurants = [
-              {
-                id: 'mock-1',
-                name: 'Burger King',
-                image: 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=500&q=60',
-                rating: 4.2,
-                deliveryTime: '20-30 min',
-                deliveryFee: 1.49,
-                minOrder: 10,
-                categories: ['Fast Food', 'Burgers'],
-                address: '123 Burger King St, City'
-              },
-              {
-                id: 'mock-2',
-                name: 'Spice Symphony',
-                image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?auto=format&fit=crop&w=500&q=60',
-                rating: 4.8,
-                deliveryTime: '40-55 min',
-                deliveryFee: 0,
-                minOrder: 25,
-                categories: ['Indian', 'Curry'],
-                address: '456 Curry Ave, FoodTown'
-              },
-              {
-                id: 'mock-3',
-                name: 'Pizza Hut',
-                image: 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=500&q=60',
-                rating: 4.0,
-                deliveryTime: '25-40 min',
-                deliveryFee: 3.99,
-                minOrder: 15,
-                categories: ['Pizza', 'Italian'],
-                address: '789 Pizza Blvd, NY'
-              }
-            ];
           }
           setDbRestaurants(parsedRestaurants);
         }

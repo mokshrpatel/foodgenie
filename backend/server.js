@@ -22,8 +22,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch(err => console.error('❌ MongoDB connection error:', err));
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -42,7 +42,7 @@ const config = require('../config.json');
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, config.HOST_IP, () => {
-  console.log(`🚀 Server running on port ${PORT} at IPv4 ${config.HOST_IP}`);
+  console.log(`Server running on port ${PORT} at IPv4 ${config.HOST_IP}`);
 });
 
 process.on('uncaughtException', (err) => {
